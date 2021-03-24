@@ -71,10 +71,7 @@ public:
    //--- methods of checking if the market models are formed
    virtual int       LongCondition(void);
    virtual int       ShortCondition(void);
-
-protected:
-   //--- method of initialization of the oscillator
-   bool              InitMACD(CIndicators *indicators);
+   double getMain(int idx){return Main(idx);}
    //--- methods of getting data
    double            Main(int ind)                     { return(m_MACD.Main(ind));      }
    double            Signal(int ind)                   { return(m_MACD.Signal(ind));    }
@@ -83,6 +80,9 @@ protected:
    double            State(int ind) { return(Main(ind)-Signal(ind)); }
    bool              ExtState(int ind);
    bool              CompareMaps(int map,int count,bool minimax=false,int start=0);
+protected:
+   //--- method of initialization of the oscillator
+   bool              InitMACD(CIndicators *indicators);
   };
 //+------------------------------------------------------------------+
 //| Constructor                                                      |
@@ -386,10 +386,6 @@ int CSignalCustomMACD::ShortCondition(void)
       if(IS_PATTERN_USAGE(1) && DiffMain(idx+1)>0.0)
          result=m_pattern_1;      // signal number 1
       //--- if the model 2 is used, look for an intersection of the main and signal line
-      double stidx  = State(idx);
-      double stidx1 = State(idx+1);
-      double mnidx  = Main(idx);
-      double sglidx = Signal(idx);
       if(IS_PATTERN_USAGE(2) && State(idx)<0.0 && State(idx+1)>0.0 && Main(idx)>0.0 && Signal(idx)>0.0)
          result=m_pattern_2;      // signal number 2
       //--- if the model 3 is used, look for an intersection of the main line and the zero level
