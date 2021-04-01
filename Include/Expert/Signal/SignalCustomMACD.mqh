@@ -73,9 +73,9 @@ public:
    virtual int       ShortCondition(void);
    double getMain(int idx){return Main(idx);}
    //--- methods of getting data
-   double            Main(int ind)                     { return(m_MACD.Main(ind));      }
-   double            Signal(int ind)                   { return(m_MACD.Signal(ind));    }
-   double            DiffMain(int ind)                 { return(Main(ind)-Main(ind+1)); }
+   double            Main(int ind)                     { return(m_MACD.Main(ind));      } // MACD    EMA_rapide(prix)-EMA_lente(prix)
+   double            Signal(int ind)                   { return(m_MACD.Signal(ind));    } // Signal  EMA_signal(MACD)
+   double            DiffMain(int ind)                 { return(Main(ind)-Main(ind+1)); } // Hist    MACD-Signal
    int               StateMain(int ind);
    double            State(int ind) { return(Main(ind)-Signal(ind)); }
    bool              ExtState(int ind);
