@@ -34,21 +34,34 @@ class CFileArray2Csv : public CFileTxt
   {
 protected:
    ENUM_DATATYPE     m_csvType;
+   string            m_fileName;
    string            m_text;
+   string            m_separator;
+   //int               m_size; // a implementer
 public:
                      CFileArray2Csv();
+                     CFileArray2Csv(string fileTitle);
                     ~CFileArray2Csv();
+   void              SetTitle(string title);
    bool              AddArray(double &array[]);
    bool              AddArray(int &array[]);
    bool              AddArray(string &array[]);
-   bool              AddArray(datetime &array[]);
+   bool              AddArray(MqlDateTime &array[]);
    bool              RecordFile();
+   int               Open();
   };
 //+------------------------------------------------------------------+
 //|                                                                  |
 //+------------------------------------------------------------------+
-CFileArray2Csv::CFileArray2Csv():m_csvType(TYPE_COLOR),m_text("")
+CFileArray2Csv::CFileArray2Csv():m_csvType(TYPE_COLOR),m_text(""),m_separator(";"),m_fileName("")
   {
+  }
+//+------------------------------------------------------------------+
+//|                                                                  |
+//+------------------------------------------------------------------+
+CFileArray2Csv::CFileArray2Csv(string fileTitle):m_csvType(TYPE_COLOR),m_text(""),m_separator(";"),m_fileName(fileTitle)
+  {
+   
   }
 //+------------------------------------------------------------------+
 //|                                                                  |
@@ -59,6 +72,11 @@ CFileArray2Csv::~CFileArray2Csv()
 //+------------------------------------------------------------------+
 //|Fonction d'ajout de texte                                         |
 //+------------------------------------------------------------------+
+void CFileArray2Csv::SetTitle(string title)
+  {
+   m_fileName = title;
+  }
+
 bool CFileArray2Csv::AddArray(double &array[])
   {
    if(m_csvType==TYPE_COLOR)
@@ -72,7 +90,7 @@ bool CFileArray2Csv::AddArray(double &array[])
    m_text += (size>0)?array[0]:"";
    for(int i=1;i<size;i++)
     {
-      m_text += ";" + array[i];
+      m_text += m_separator + array[i];
     }
    m_text += "\n";
    return false;
@@ -90,7 +108,7 @@ bool CFileArray2Csv::AddArray(int &array[])
    m_text += (size>0)?array[0]:"";
    for(int i=1;i<size;i++)
     {
-      m_text += ";" + array[i];
+      m_text += m_separator + array[i];
     }
    m_text += "\n";
    return false;
@@ -108,12 +126,12 @@ bool CFileArray2Csv::AddArray(string &array[])
    m_text += (size>0)?array[0]:"";
    for(int i=1;i<size;i++)
     {
-      m_text += ";" + array[i];
+      m_text += m_separator + array[i];
     }
    m_text += "\n";
    return false;
   }
-bool CFileArray2Csv::AddArray(datetime &array[])
+bool CFileArray2Csv::AddArray(MqlDateTime &array[])
   {
    if(m_csvType==TYPE_COLOR)
       m_csvType = TYPE_DATETIME;
@@ -123,17 +141,35 @@ bool CFileArray2Csv::AddArray(datetime &array[])
       return true;
     }
    int size = ArraySize(array);
-   m_text += (size>0)?array[0]:"";
+   m_text += (size>0)?(array[0].day_of_year +";"+
+                       array[0].day_of_week +";"+
+                       array[0].year        +";"+
+                       array[0].mon         +";"+
+                       array[0].day         +";"+
+                       array[0].hour        +";"+
+                       array[0].min         +";"+
+                       array[0].sec):"";
    for(int i=1;i<size;i++)
     {
-      m_text += ";" + array[i];
+      m_text += "\n" + array[i].day_of_year +";"+
+                       array[i].day_of_week +";"+
+                       array[i].year        +";"+
+                       array[i].mon         +";"+
+                       array[i].day         +";"+
+                       array[i].hour        +";"+
+                       array[i].min         +";"+
+                       array[i].sec;
     }
-   m_text += "\n";
+   
    return false;
   }
 
 bool CFileArray2Csv::RecordFile(void)
   {
+   if(CFileTxt::Open(m_fileName,FILE_WRITE|FILE_ANSI|FILE_TXT|FILE_COMMON)<0)
+   {
+      Print("Error code ",GetLastError());
+   }
    FileWriteString(m_handle,m_text);
    return false;
   }
