@@ -9,12 +9,12 @@
 // wizard description start
 //+------------------------------------------------------------------+
 //| Description of the class                                         |
-//| Title=Signals of indicator 'Moving Average'                      |
+//| Title=Signals of indicator 'Custom Moving Average'                      |
 //| Type=SignalAdvanced                                              |
-//| Name=Moving Average                                              |
-//| ShortName=MA                                                     |
-//| Class=CSignalMA                                                  |
-//| Page=signal_ma                                                   |
+//| Name=Moving Average (Custom)                                     |
+//| ShortName=CustomMA                                               |
+//| Class=CSignalCustomMA                                            |
+//| Page=signal_custom_ma                                            |
 //| Parameter=PeriodMA,int,12,Period of averaging                    |
 //| Parameter=Shift,int,0,Time shift                                 |
 //| Parameter=Method,ENUM_MA_METHOD,MODE_SMA,Method of averaging     |
@@ -22,7 +22,7 @@
 //+------------------------------------------------------------------+
 // wizard description end
 //+------------------------------------------------------------------+
-//| Class CSignalMA.                                                 |
+//| Class CSignalCustomMA.                                           |
 //| Purpose: Class of generator of trade signals based on            |
 //|          the 'Moving Average' indicator.                         |
 //| Is derived from the CExpertSignal class.                         |
@@ -69,7 +69,7 @@ public:
    double            DiffHighMA(int ind)                 { return(High(ind)-MA(ind));  }
    double            DiffLowMA(int ind)                  { return(Low(ind)-MA(ind));   }
    double            DiffCloseMA(int ind)                { return(Close(ind)-MA(ind)); }
-
+   
 protected:
    //--- method of initialization of the indicator
    bool              InitMA(CIndicators *indicators);
@@ -159,6 +159,11 @@ int CSignalCustomMA::LongCondition(void)
   {
    int result=0;
    int idx   =StartIndex();
+   
+   double diffma0 = DiffMA(idx);
+   double diffma1 = DiffMA(idx+1);
+   double diffclosema0 = DiffCloseMA(idx);
+   double diffclosema1 = DiffCloseMA(idx+1);
 //--- analyze positional relationship of the close price and the indicator at the first analyzed bar
    if(DiffCloseMA(idx)<0.0)
      {
@@ -175,7 +180,7 @@ int CSignalCustomMA::LongCondition(void)
      {
       //--- the close price is above the indicator (the indicator has no objections to buying)
       if(IS_PATTERN_USAGE(0))
-         result=m_pattern_0;
+         result=(DiffMA(idx)>0.0)?m_pattern_0:0;
       //--- if the indicator is directed upwards
       if(DiffMA(idx)>0.0)
         {
@@ -229,7 +234,7 @@ int CSignalCustomMA::ShortCondition(void)
      {
       //--- the close price is below the indicator (the indicator has no objections to buying)
       if(IS_PATTERN_USAGE(0))
-         result=m_pattern_0;
+         result=(DiffMA(idx)<0.0)?m_pattern_0:0;
       //--- the indicator is directed downwards
       if(DiffMA(idx)<0.0)
         {

@@ -87,10 +87,10 @@ bool CFileArray2Csv::AddArray(double &array[])
       return true;
     }
    int size = ArraySize(array);
-   m_text += (size>0)?array[0]:"";
+   m_text += (size>0)?DoubleToString(array[0]):"";
    for(int i=1;i<size;i++)
     {
-      m_text += m_separator + array[i];
+      m_text += m_separator + DoubleToString(array[i]);
     }
    m_text += "\n";
    return false;
@@ -105,10 +105,10 @@ bool CFileArray2Csv::AddArray(int &array[])
       return true;
     }
    int size = ArraySize(array);
-   m_text += (size>0)?array[0]:"";
+   m_text += (size>0)?IntegerToString(array[0]):"";
    for(int i=1;i<size;i++)
     {
-      m_text += m_separator + array[i];
+      m_text += m_separator + IntegerToString(array[i]);
     }
    m_text += "\n";
    return false;
@@ -141,24 +141,24 @@ bool CFileArray2Csv::AddArray(MqlDateTime &array[])
       return true;
     }
    int size = ArraySize(array);
-   m_text += (size>0)?(array[0].day_of_year +";"+
-                       array[0].day_of_week +";"+
-                       array[0].year        +";"+
-                       array[0].mon         +";"+
-                       array[0].day         +";"+
-                       array[0].hour        +";"+
-                       array[0].min         +";"+
-                       array[0].sec):"";
+   m_text += (size>0)?(IntegerToString(array[0].day_of_year) +";"+
+                       IntegerToString(array[0].day_of_week) +";"+
+                       IntegerToString(array[0].year)        +";"+
+                       IntegerToString(array[0].mon)         +";"+
+                       IntegerToString(array[0].day)         +";"+
+                       IntegerToString(array[0].hour)        +";"+
+                       IntegerToString(array[0].min)         +";"+
+                       IntegerToString(array[0].sec)):"";
    for(int i=1;i<size;i++)
     {
-      m_text += "\n" + array[i].day_of_year +";"+
-                       array[i].day_of_week +";"+
-                       array[i].year        +";"+
-                       array[i].mon         +";"+
-                       array[i].day         +";"+
-                       array[i].hour        +";"+
-                       array[i].min         +";"+
-                       array[i].sec;
+      m_text += "\n" + IntegerToString(array[i].day_of_year) +";"+
+                       IntegerToString(array[i].day_of_week) +";"+
+                       IntegerToString(array[i].year)        +";"+
+                       IntegerToString(array[i].mon)         +";"+
+                       IntegerToString(array[i].day)         +";"+
+                       IntegerToString(array[i].hour)        +";"+
+                       IntegerToString(array[i].min)         +";"+
+                       IntegerToString(array[i].sec);
     }
    
    return false;

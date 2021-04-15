@@ -9,12 +9,12 @@
 // wizard description start
 //+------------------------------------------------------------------+
 //| Description of the class                                         |
-//| Title=Signals of oscillator 'Custom MACD'                               |
+//| Title=Signals of oscillator 'Custom MACD'                        |
 //| Type=SignalAdvanced                                              |
-//| Name=MACD                                                        |
-//| ShortName=CustomMACD                                                   |
-//| Class=CSignalCustomMACD                                                |
-//| Page=signal_custom_macd                                                 |
+//| Name=MACD(Custom)                                                |
+//| ShortName=CustomMACD                                             |
+//| Class=CSignalCustomMACD                                          |
+//| Page=signal_custom_macd                                          |
 //| Parameter=PeriodFast,int,12,Period of fast EMA                   |
 //| Parameter=PeriodSlow,int,24,Period of slow EMA                   |
 //| Parameter=PeriodSignal,int,9,Period of averaging of difference   |
@@ -22,7 +22,7 @@
 //+------------------------------------------------------------------+
 // wizard description end
 //+------------------------------------------------------------------+
-//| Class CSignalCustomMACD.                                               |
+//| Class CSignalCustomMACD.                                         |
 //| Purpose: Class of generator of trade signals based on            |
 //|          the 'Moving Average Convergence/Divergence' oscillator. |
 //| Is derived from the CExpertSignal class.                         |
@@ -71,7 +71,6 @@ public:
    //--- methods of checking if the market models are formed
    virtual int       LongCondition(void);
    virtual int       ShortCondition(void);
-   double getMain(int idx){return Main(idx);}
    //--- methods of getting data
    double            Main(int ind)                     { return(m_MACD.Main(ind));      } // MACD    EMA_rapide(prix)-EMA_lente(prix)
    double            Signal(int ind)                   { return(m_MACD.Signal(ind));    } // Signal  EMA_signal(MACD)
@@ -80,6 +79,8 @@ public:
    double            State(int ind) { return(Main(ind)-Signal(ind)); }
    bool              ExtState(int ind);
    bool              CompareMaps(int map,int count,bool minimax=false,int start=0);
+   
+   double            GetDirection(void)                { return m_direction;}
 protected:
    //--- method of initialization of the oscillator
    bool              InitMACD(CIndicators *indicators);
@@ -290,7 +291,7 @@ bool CSignalCustomMACD::CompareMaps(int map,int count,bool minimax,int start)
 //--- each "element of the array" definitely describes the desired ratio
 //--- of current extremums of the oscillator and the price with previous ones
 //--- purpose of bits of an elements of the pattern of the bit-map pattern
-//--- bit 3 - is equal to if the ratio of extremums of the oscillator is insignificant for us
+//--- bit 3 - is equal to 1 if the ratio of extremums of the oscillator is insignificant for us
 //---         is equal to 0 if we want to "find" the ratio of extremums of the oscillator determined by the value of bit 2
 //--- bit 2 - is equal to 1 if we want to "discover" the situation when the current extremum of the "oscillator" is "more extreme" than the previous one
 //---         (current peak is higher or current valley is deeper)

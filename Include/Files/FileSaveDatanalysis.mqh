@@ -108,3 +108,28 @@ void CFileSaveDatanalysis::RecordData(void)
    m_datetimeFile.RecordFile();
    m_signalNames.RecordFile();
   }
+ 
+/*void CFileSaveDatanalysis::RecordCharts()
+  {
+   hChart=ChartOpen(Symbol(),0);
+   ChartSetInteger(hChart,CHART_MODE,CHART_CANDLES);            // Candlestick
+   
+   ChartSetInteger(hChart,CHART_AUTOSCROLL,true);            // autoscroll enabled
+   ChartSetInteger(hChart,CHART_COLOR_BACKGROUND,White);     // white background
+   ChartSetInteger(hChart,CHART_COLOR_FOREGROUND,Black);     // axes and labels are black
+   ChartSetInteger(hChart,CHART_SHOW_OHLC,false);            // OHLC are not shown
+   ChartSetInteger(hChart,CHART_SHOW_BID_LINE,true);         // show BID line
+   ChartSetInteger(hChart,CHART_SHOW_ASK_LINE,false);        // hide ASK line
+   ChartSetInteger(hChart,CHART_SHOW_LAST_LINE,false);       // hide LAST line
+   ChartSetInteger(hChart,CHART_SHOW_GRID,true);             // show grid
+   ChartSetInteger(hChart,CHART_SHOW_PERIOD_SEP,true);       // show period separators
+   ChartSetInteger(hChart,CHART_COLOR_GRID,LightGray);       // grid is light-gray
+   ChartSetInteger(hChart,CHART_COLOR_CHART_LINE,Black);     // chart lines are black
+   ChartSetInteger(hChart,CHART_COLOR_CHART_UP,Black);       // up bars are black
+   ChartSetInteger(hChart,CHART_COLOR_CHART_DOWN,Black);     // down bars are black
+   ChartSetInteger(hChart,CHART_COLOR_BID,Gray);             // BID line is gray
+   ChartSetInteger(hChart,CHART_COLOR_VOLUME,Green);         // volumes and orders levels are green
+   ChartSetInteger(hChart,CHART_COLOR_STOP_LEVEL,Red);       // SL and TP levels are red
+   ChartSetString(hChart,CHART_COMMENT,ChartSymbol(hChart)); // comment contains instrument
+   ChartScreenShot(hChart,"picture2.gif",Picture2_width,Picture2_height); // save chart as image file
+  }*/
